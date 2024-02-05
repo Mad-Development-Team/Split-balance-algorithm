@@ -1,28 +1,59 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fflask3&demo-title=Flask%203%20%2B%20Vercel&demo-description=Use%20Flask%203%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fflask3-python-template.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994156/random/flask.png)
+# Split - Expense Management Algorithm
 
-# Flask + Vercel
+Welcome to the GitHub repository for the core algorithm behind "Split", a mobile application designed to simplify group expense management. This algorithm efficiently calculates the minimal number of transactions required to settle debts within a group, making it easier for friends and families to manage shared expenses without the hassle of complex debt chains.
 
-This example shows how to use Flask 3 on Vercel with Serverless Functions using the [Python Runtime](https://vercel.com/docs/concepts/functions/serverless-functions/runtimes/python).
+## Features
 
-## Demo
+- **Minimal Transactions**: The algorithm identifies the optimal way to settle all debts with the fewest transactions possible.
+- **Simplicity**: It accepts a list of expenses and automatically calculates who owes whom and how much.
+- **Flexibility**: You can easily add or modify expenses, accommodating changes in group activities and expenses.
+- **Clarity**: Outputs clear, straightforward transactions needed to balance the group's expenses.
 
-https://flask-python-template.vercel.app/
+## How to Use
 
-## How it Works
+1. **Define Expenses**: Start by creating a list of expenses. Each expense should be a list containing the payer's name, the amount paid, and the names of the beneficiaries.
 
-This example uses the Web Server Gateway Interface (WSGI) with Flask to enable handling requests on Vercel with Serverless Functions.
+    ```python
+    expenses = [
+        ["Alice", 120, "Bob", "Charlie"],
+        ["Bob", 150, "Alice", "Charlie"],
+        ["Charlie", 180, "Alice", "Bob"]
+    ]
+    ```
 
-## Running Locally
+2. **Initialize the Algorithm**: Create an instance of the `Split` class with your list of expenses.
 
-```bash
-npm i -g vercel
-vercel dev
-```
+    ```python
+    split_instance = Split(expenses)
+    ```
 
-Your Flask application is now available at `http://localhost:3000`.
+3. **Calculate Transactions**: Use the `balance` method to calculate the minimal transactions required.
 
-## One-Click Deploy
+    ```python
+    transactions = split_instance.balance()
+    ```
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
+4. **Review Transactions**: The output will be a list of transactions, where each transaction indicates who should pay whom and the amount.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fflask3&demo-title=Flask%203%20%2B%20Vercel&demo-description=Use%20Flask%203%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fflask3-python-template.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994156/random/flask.png)
+    ```python
+    for transaction in transactions:
+        print(transaction)
+    ```
+
+## Example
+
+Given the expenses:
+
+- Alice paid 120 euros for Bob and Charlie.
+- Bob paid 150 euros for Alice and Charlie.
+- Charlie paid 180 euros for Alice and Bob.
+
+The algorithm might output a single transaction:
+
+- ['Charlie', '45.0', 'Alice'].
+
+This indicates that to settle all debts within the group, only one transaction is necessary.
+
+## Attribution
+
+This algorithm is based on the original work available at [davymariko's Tricount GitHub repository](https://github.com/davymariko/Tricount). We extend our heartfelt gratitude to the original creator for their innovative approach to simplifying group expense management.
