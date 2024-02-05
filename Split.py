@@ -24,14 +24,14 @@ class Split:
         # Process the list of expenses directly
         for expense in self.expenses:
             length = len(expense)
-            amount_per_person = float(expense[1]) / float(length - 2)
+            amount_per_person = round(float(expense[1]) / float(length - 2), 2)
             for receiver in expense[2:]:
                 if expense[0] == receiver:
                     continue  # Skip if the payer is also listed as a receiver for the same expense
                 else:
                     # Add or subtract the amount from each person's balance
-                    self.balancelist.append([expense[0], -amount_per_person])
-                    self.balancelist.append([receiver, amount_per_person])
+                    self.balancelist.append([expense[0], round(-amount_per_person, 2)])
+                    self.balancelist.append([receiver, round(amount_per_person, 2)])
 
         # Consolidate balances
         balance_dict = {}
@@ -42,7 +42,7 @@ class Split:
             else:
                 balance_dict[person] = amount
 
-        self.netowned = [[person, balance] for person, balance in balance_dict.items()]
+        self.netowned = [[person, round(balance, 2)] for person, balance in balance_dict.items()]
         # Sort by net balance to optimize transactions
         self.netowned.sort(key=lambda x: x[1])
 
@@ -51,7 +51,7 @@ class Split:
             debtor = self.netowned[0]
             creditor = self.netowned[-1]
 
-            amount = min(-debtor[1], creditor[1])
+            amount = round(min(-debtor[1], creditor[1]), 2)
             self.transactions.append([debtor[0], amount, creditor[0]])
 
             debtor[1] += amount
@@ -69,9 +69,10 @@ if __name__ == '__main__':
     # Create a list with the expenses
     # [payer, quantity, receptor1, receptor2, ...]
     expenses = [
-        ['Alice', 120, 'Alice', 'Bob', 'Charlie'],  # Alice paid 120 for Bob and Charlie
-        ['Bob', 150, 'Bob', 'Alice', 'Charlie'],  # Bob paid 150 for Alice and Charlie
-        ['Charlie', 180.56, 'Alice', 'Bob']  # Charlie paid 180,56 for Alice and Bob
+        ['Alice', 125, 'Alice', 'Bob', 'Charlie'],  # Alice paid 120 for Bob and Charlie
+        ['Bob', 150, 'Alice', 'Charlie'],  # Bob paid 150 for Alice and Charlie
+        ['Charlie', 180, 'Bob'],
+        ['Alice', 30, 'Bob', 'Alice']
     ]
 
     # Create a split instance with the expenses
