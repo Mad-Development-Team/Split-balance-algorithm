@@ -1,9 +1,7 @@
 from flask import Flask, request, jsonify
-
-from Split import Split  
+from Split import Split
 
 app = Flask(__name__)
-
 
 @app.route('/balance', methods=['POST'])
 def balance():
@@ -15,7 +13,7 @@ def balance():
     split_instance = Split(expenses)
     transactions = split_instance.balance()
 
-    formatted_transactions = [f"{trans[0]}, {trans[1]}, {trans[2]}" for trans in transactions]
+    formatted_transactions = [[trans[0], trans[1], trans[2]] for trans in transactions]
 
     return jsonify({"balance": formatted_transactions})
 
